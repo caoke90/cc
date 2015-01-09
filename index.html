@@ -33,7 +33,7 @@
                 url:location.href
             }
             this.tpl=tpl||this.tpl
-            this.context=$("<div></div>").wrapInner( ejs.render(this.tpl,this.data) )
+            this.context=$("<div>").wrapInner( ejs.render(this.tpl,this.data) )
 
             var the=this
             the.clickNum=0;
@@ -65,7 +65,7 @@
                 url:location.href
             }
             this.tpl=tpl||this.tpl
-            this.context=$("<div>"+ejs.render(this.tpl,this.data)+"</div>")
+            this.context=$("<div>").wrapInner( ejs.render(this.tpl,this.data) )
             var the=this
 
             var node=new Node1()
