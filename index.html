@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>节点框架cc.div</title>
+    <!-- 界面css  -->
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/css/flat-ui.css" rel="stylesheet">
+
+    <link href="assets/css/main.css" rel="stylesheet">
+    <!-- 界面js  -->
+    <script src="modules/jquery.min.js"></script>
+    <script src="modules/ejs.min.js"></script>
+    <script src="modules/cc.js"></script>
+
+</head>
+<body>
+
+</body>
+<script>
+    var Node1=cc.Div.extend({
+        tpl:'<div emit="place1" class="col-xs-2 demo">子类</div>' ,
+        data:null,
+        init:function(data,tpl){
+            this._super()
+            //转化成数组
+            this.data={
+                url:location.href
+            }
+            this.tpl=tpl||this.tpl
+            this.context=$("<div></div>").wrapInner( ejs.render(this.tpl,this.data) )
+
+            var the=this
+            the.clickNum=0;
+            $(".demo",the.context).on("click",function(){
+                the.clickNum+=1
+                if(the.clickNum==1){
+                    $(this).text("我的id是"+the._id)
+                }
+                if(the.clickNum==2){
+                    $(this).text("父节点id是"+the.getParent()._id)
+                }
+                if(the.clickNum>2){
+                    $(this).text("你点击了我"+the.clickNum+"次了")
+                }
+            })
+        }
+    })
+    var Node2=cc.Div.extend({
+        tpl:'' +
+                '<div emit="self">' +
+                '<div class="demo2">添加子节点（我是父节点）</div>' +
+                '</div>' +
+                '<div emit="body" class="col-xs-12" recive="place1">node</div>',
+        data:null,
+        init:function(data,tpl){
+            this._super()
+            //转化成数组
+            this.data={
+                url:location.href
+            }
+            this.tpl=tpl||this.tpl
+            this.context=$("<div>"+ejs.render(this.tpl,this.data)+"</div>")
+            var the=this
+
+            var node=new Node1()
+            node.init()
+            the.addChild(node)
+            $(".demo2",the.context).on("click",function(){
+                var node=new Node1()
+                node.init()
+                the.addChild(node)
+            })
+        }
+    })
+    var scene1=new Node2()
+    scene1.init()
+    scene1.onEnter("body")
+    var scene2=new Node2()
+    scene2.init()
+    scene2.onEnter("body")
+
+</script>
+</html>
