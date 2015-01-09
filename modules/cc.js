@@ -544,7 +544,7 @@ cc.Div=cc.Node.extend({
             the.context= $("[emit_"+the._id+"]",the.getParent().context)
         }else{
             $(dom).append(the.context)
-            the.context= $("[emit_"+the._id+"]",$(dom)).parent()
+            the.context=$(dom)
         }
 
     },
