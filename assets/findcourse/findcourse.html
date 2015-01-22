@@ -1,0 +1,101 @@
+<div emit="body">
+    <style>
+        body{background: #ffffff;}
+        .blo1{background: #3e94db;padding-left: 20px;padding-top: 10px;padding-bottom: 10px;}
+        .blo1 .form-group{position: relative;width: 100%;}
+        .blo1 .ui-search{position: absolute; top: 8px;
+            left: 15px;font-weight: normal;color: #fff;z-index: 10;}
+        .blo1 .fui-cross-circle{position: absolute; top: 0px;right:15px;color: #3e94db;}
+
+        .blo1 input{background: #167bbf;text-indent: 30px;color: #fff;border: 0;font-size: 14px;height: 32px;}
+        #search{color: #fff;padding-right: 0;text-align: center;font-family: "Microsoft Yahei";}
+        .blo2{background: #ffffff;}
+        .blo2 .col-xs-12{border-bottom: 1px solid #ddd;font-size: 14px;padding-top: 8px;padding-bottom: 8px;}
+        .blo2 .fui-cross-circle{color: #999;}
+        .blo2 .btn{width: 140px;height:40px;border: 1px solid #ddd;border-radius: 10px;}
+
+        .blo3{background: #f2f6f9;border: 1px solid #ddd;padding: 5px 15px;color: #404040;font-family: "Microsoft Yahei";}
+        .blo3 .col-xs-4{text-align: center;padding: 0;}
+        .blo3 .text{
+            font-size: 14px;
+        }
+
+        .blo4{font-family:"Microsoft Yahei";}
+        .blo4 a{color: #404040;font-family:"Microsoft Yahei";}
+        .blo4 .list{border-bottom: 1px solid #ddd;padding-top: 12px;}
+        .blo4 .left{}
+        .blo4 .left p{ font-size: 13px;white-space:nowrap;text-indent: -10px;margin-top: 2px;}
+        .blo4 .right{font-size: 13px;padding-left: 0;}
+        .blo4 .right .t1{color: #404040;min-height:42px;}
+        .blo4 .right .t2{position: relative;}
+        .blo4 .right strong{color: red;font-size: 15px;margin-right: 5px;}
+        .blo4 .right span.free{padding:3px 12px;}
+        .blo4 .right span.liwu{padding:3px 12px;}
+        .blo4 .right .p_r{position: absolute;right: 0px;color: #3e94db;}
+        .blo4 .right .t3{font-size: 12px;color: #999;}
+
+        .blo5{position: relative;z-index: 10;display: none;}
+        .blo5 .list1{padding: 0;background: #fff;margin-right: 10px;border: 1px solid #ddd;}
+        .blo5 .list1 ul{width: 100%;padding: 0;text-align: center;margin: 0;}
+        .blo5 .list1 li{ list-style: none;color: #404040;width: 100%;background: #ffffff;border-bottom: 1px solid #ddd;padding: 8px 0;}
+        .blo5 .list1 li .fui-arrow-right{font-size: 12px;position: relative;left: 10px;}
+        .blo5 .list1 li.on{background: #3e94db;color: #fff;}
+
+        .bggray{display: none;}
+        .blo5 .listitem{display: none;}
+        .loadbtn{display:none;text-align: center;}
+
+        .form-group input[type="text"]::-moz-placeholder {
+            color: #efefef;opacity: 0.5;
+        }
+        .form-group input[type="text"]:-ms-input-placeholder {
+            color: #efefef;opacity: 0.5;
+        }
+        .form-group input[type="text"]::-webkit-input-placeholder {
+            color: #efefef;opacity: 0.5;
+        }
+    </style>
+    <div style="height: 102px;width: 100%;">
+        <div class="stickup" style="z-index: 30;padding: 0;width: 100%;">
+            <!--搜索框-->
+            <div class="row blo1">
+                <div class="col-xs-9" style="padding: 0;padding-left: 10px;">
+                    <div class="form-group">
+                        <span class="ui-search"></span>
+                        <input type="text" value="<%-data1.query%>" placeholder="" class="col-xs-12" id="input"  />
+                        <span class="fui-cross-circle" id="reset"></span>
+                    </div>
+                </div>
+                <div class="col-xs-2" id="search">搜索</div>
+            </div>
+            <div class="row blo2" style="display: none;position: absolute;top:52px;width:100%;background: #fff;z-index: 12;opacity: 1;">
+                <div recive="info">
+
+                </div>
+                <div class="col-xs-12" style="text-align: center;"> <span class="btn" id="clear">清空搜索记录</span></div>
+            </div>
+            <!--导航-->
+            <div class="bggray" style="position:absolute;background:#333;opacity:0.5;width: 100%;height:<%=$(window).height()%>px;z-index: 1 "></div>
+            <div class="row blo3">
+                <div class="col-xs-4" style="border-right: 1px solid #ddd;" id="alllist">
+                    <span class="text">全部分类</span>
+                    <span class="fui-triangle-down" style="color: #3e94db;font-size: 12px;"></span>
+                </div>
+                <div class="col-xs-4" style="border-right: 1px solid #ddd;" id="anxiaoliang">
+                    <span class="text">销量</span>
+                </div>
+                <div class="col-xs-4" id="anjiage">
+                    <span class="text">价格</span>
+                </div>
+            </div>
+            <div class="row blo5" recive="nav">
+                <!--nav-->
+            </div>
+        </div>
+    </div>
+
+    <div class="row blo4" recive="list">
+        <!--list-->
+    </div>
+    <div class="loadbtn">正在加载请稍后……</div>
+</div>

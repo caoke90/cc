@@ -20,8 +20,7 @@ define(function(require, exports, module){
             }
             this.tpl=tpl||this.tpl
             this.context=$("<div>"+ejs.render(this.tpl,this.data)+"</div>")
-
-            require("jquery.cookie");
+;
             require("dialog-min");
             require("ui-dialog.css");
            this.initAnimate()
@@ -32,23 +31,23 @@ define(function(require, exports, module){
             //提交
             $("#tijiao",the.context).on("click",function(){
 
-                the.data.userName=$("#login-name").val()
+                the.data.userName=$("#login-name",the.context).val()
                 if(!the.data.userName){
                     the.showdialog1("用户名不能为空",$("#login-name",the.context)[0])
                     return;
                 }
-                the.data.password=$("#login-pass").val()
+                the.data.password=$("#login-pass",the.context).val()
                 if(!the.data.password){
                     the.showdialog1("密码不能为空",$("#login-pass",the.context)[0])
                     return;
                 }
-                the.data.next_page=getQueryString("next_page")
+                the.data.next_page=getQueryString("next_page")||"learntarget.html?file=learntarget"
                 if(!the.data.next_page){
-                    the.showdialog2("密码不能为空")
+                    the.showdialog2("next_page不能为空")
                     return;
                 }
                 $.ajax({
-                    url:"http://weixin.neibu.koo.cn/login/bindLogin",
+                    url:weixinUrl+"/login/bindLogin",
                     dataType : "jsonp",
                     data:{
                         type:"jsonp",
@@ -74,12 +73,12 @@ define(function(require, exports, module){
         },
         //设置coolie
         setCookie:function(json){
-
+            require("jquery.cookie");
             if(typeof json=="string"){
                 json=JSON().parse(json)
             }
             for(var k in json){
-                $.cookie(k,json[k])
+                $.cookie(k,json[k], { expires:7,path: location.host.replace(/\w*/,"")});
             }
         },
         //气泡提示

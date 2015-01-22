@@ -1,37 +1,29 @@
+<div emit="body">
+    <header style="position: relative;top: 0; z-index: 10;opacity: 0.9">
+        <div class="row palette palette-peter-river">
+            <div class="col-xs-4">
+                <a href="javascript:history.go(-1)"><span id="re" class="fui-arrow-left text-inverse" style="font-size: 18px;"></span></a>
+            </div>
+            <div class="col-xs-6 text-inverse">
+                <span style="font-size: 18px;">应试学习</span>
+            </div>
+        </div>
+    </header>
 
-<div emit="no" class="row palette palette-peter-river">
-    <div class="col-xs-4">
-        <a href="javascript:history.go(-1)"><span id="re" class="fui-arrow-left text-inverse" style="font-size: 18px;"></span></a>
+
+    <div class="row palette" style="margin: 0;">
+        <div class="mubiao2"></div>
     </div>
-    <div class="col-xs-6 text-inverse">
-        <span style="font-size: 18px;">找回密码</span>
+
+    <div class="row palette" style="padding-left: 5px;padding-right: 5px;" id="box">
+        <%for(var i=0;i<content.length;i++){%>
+        <label class="radio col-xs-4" style="padding-left: 15px;">
+            <input type="checkbox" name="optionsRadios" value="option1" list="<%-i%>"  data-toggle="radio"  >
+            <span style="color: #5d5d5d;"><%-content[i].name%></span>
+        </label>
+        <%}%>
     </div>
+
+    <div class="row palette" id="next"><a class="btn btn-info btn-lg btn-block" href="learntarget.html?file=learntarget3">下一步</a></div>
 </div>
-
-<div emit="no" class="login-form">
-    <div class="form-group">
-        <label class="login-field-icon fui-user" for="login-name"></label>
-        <input type="text" class="form-control login-field" value="" placeholder="手机号/注册号" id="login-name" />
-    </div>
-
-    <div class="form-group">
-        <input type="password" class="login-field" style="width: 160px; text-indent: 3px;" value="" placeholder="验证码" id="login-test" />
-        <a href="#" style="padding:10px 15px;font-size: 15px;text-decoration: underline;" id="login-code">获取验证码</a>
-        <label  style="display: none;">59秒后重发</label>
-    </div>
-    <div class="form-group">
-        <label class="login-field-icon fui-lock" for="login-pass"></label>
-        <input type="password" class="form-control login-field" value="" placeholder="新密码" id="login-pass" />
-    </div>
-    <div class="form-group">
-        <label class="login-field-icon fui-lock" for="login-pass2"></label>
-        <input type="password" class="form-control login-field" value="" placeholder="确认密码" id="login-pass2" />
-    </div>
-    <div  class="form-group">
-        <a class="btn btn-info btn-lg btn-block" href="#">确认并提交</a>
-    </div>
-
-
-</div>
-
 

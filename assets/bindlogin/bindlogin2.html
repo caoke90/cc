@@ -10,25 +10,33 @@
 
 <div emit="no" class="login-form">
     <div class="form-group">
-        <label class="login-field-icon fui-user" for="login-name"></label>
-        <input type="text" class="form-control login-field" value="" placeholder="手机号/注册号" id="login-name" />
+        <label class="login-field-icon fui-user" for="login-telephone"></label>
+        <input type="text" class="form-control login-field" value="" placeholder="手机号" id="login-telephone" />
+        <span class="login-field-icon2 fui-check-circle" style="font-size: 18px;color: #2ecc71;display: none;"></span>
+        <span class="login-field-icon2 fui-cross-circle" style="font-size: 18px;color: #e74c3c;display: none;"></span>
     </div>
 
     <div class="form-group">
-        <input type="password" class="login-field" style="width: 160px; text-indent: 3px;" value="" placeholder="验证码" id="login-test" />
-        <a href="#" style="padding:10px 15px;font-size: 15px;text-decoration: underline;" id="login-code">获取验证码</a>
+        <input type="text" class="login-field" style="width: 160px; text-indent: 3px;" value="" placeholder="验证码" id="login-code" />
+        <span class="fui-check-circle" style="font-size: 18px;color: #2ecc71;display: none;"></span>
+        <span class="fui-cross-circle" style="font-size: 18px;color: #e74c3c;display: none;"></span>
+        <a href="#" style="padding:10px 15px;font-size: 15px;text-decoration: underline;" id="login-getcode">获取验证码</a>
         <label  style="display: none;">59秒后重发</label>
     </div>
     <div class="form-group">
         <label class="login-field-icon fui-lock" for="login-pass"></label>
         <input type="password" class="form-control login-field" value="" placeholder="新密码" id="login-pass" />
+        <span class="login-field-icon2 fui-check-circle" style="font-size: 18px;color: #2ecc71;display: none;"></span>
+        <span class="login-field-icon2 fui-cross-circle" style="font-size: 18px;color: #e74c3c;display: none;"></span>
     </div>
     <div class="form-group">
         <label class="login-field-icon fui-lock" for="login-pass2"></label>
         <input type="password" class="form-control login-field" value="" placeholder="确认密码" id="login-pass2" />
+        <span class="login-field-icon2 fui-check-circle" style="font-size: 18px;color: #2ecc71;display: none;"></span>
+        <span class="login-field-icon2 fui-cross-circle" style="font-size: 18px;color: #e74c3c;display: none;"></span>
     </div>
     <div  class="form-group">
-        <a class="btn btn-info btn-lg btn-block" href="#">确认并提交</a>
+        <a class="btn btn-info btn-lg btn-block" id="change">确认并提交</a>
     </div>
 
 

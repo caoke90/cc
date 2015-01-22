@@ -525,7 +525,8 @@ cc.Scene=cc.Node.extend({
 })
 //context 包含html文本和事件
 cc.Div=cc.Node.extend({
-    onEnter:function(dom){
+    context:"<div></div>",
+    onEnter:function(){
         var the=this
         $("[emit]",the.context).each(function(){
             $(this).attr("emit_"+the._id,$(this).attr("emit"))
@@ -536,24 +537,37 @@ cc.Div=cc.Node.extend({
             $(this).removeAttr("recive")
         })
         this._super()
-        if(the.getParent()&&the.getParent().context){
-            cc.log(the.context.html())
-            $("[emit_"+the._id+"]",the.context).each(function(){
-                $("[recive_"+the.getParent()._id+"="+$(this).attr("emit_"+the._id)+"]",the.getParent().context).append($(this))
-            })
-            the.context= $("[emit_"+the._id+"]",the.getParent().context)
+        if(!the.body){
+            if(the.getParent()&&the.getParent().context){
+                $("[emit_"+the._id+"]",the.context).each(function(){
+                    $("[recive_"+the.getParent()._id+"="+$(this).attr("emit_"+the._id)+"]",the.getParent().context).append($(this))
+                })
+                the.context= $("[emit_"+the._id+"]",the.getParent().context)
+            }
         }else{
-            $(dom).append(the.context)
-            the.context=$(dom)
+            $(the.body).append($(the.context).children())
+            the.context= $("[emit_"+the._id+"]",$(the.body)).parent()
+
         }
 
     },
     //结束
     onExit:function(){
         this._super()
-        this.context.remove()
+        $("[emit_"+this._id+"]",this.context.parent()).remove()
     }
 })
+
+//本地数据存储
+cc.localStorage=function(name,value){
+    if(arguments.length==2){
+        localStorage.setItem(name, value);
+    }else{
+        return localStorage.getItem(name);
+    }
+
+}
+//cc.userid=60323463
 ////demo
 //var str1="<div id='hello'>hello world</div>"
 //var Demo=cc.Div.extend({

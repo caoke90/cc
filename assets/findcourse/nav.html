@@ -1,0 +1,18 @@
+<div class="col-xs-12" emit="nav">
+    <div class="col-xs-5 list1 listhead">
+        <ul>
+            <%for(var i=0;i < listhead[0].length;i++){var item=listhead[0][i];%>
+            <li><%=item.name%><span class="fui-arrow-right" style="position: absolute;right: -50%;"></span></li>
+            <%}%>
+        </ul>
+    </div>
+    <%for(var i=1;i < listhead.length;i++){var list=listhead[i];%>
+    <div class="col-xs-5 list1 listitem">
+        <ul>
+            <%for(var k=0;k<list.length;k++){%>
+            <li><%=list[k].name%></li>
+            <%}%>
+        </ul>
+    </div>
+    <%}%>
+</div>

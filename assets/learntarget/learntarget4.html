@@ -1,0 +1,58 @@
+<div emit="body">
+<div class="row palette palette-peter-river">
+    <div class="col-xs-4">
+        <a href="javascript:history.go(-1)"><span id="re" class="fui-arrow-left text-inverse" style="font-size: 18px;"></span></a>
+    </div>
+    <div class="col-xs-6 text-inverse">
+        <span style="font-size: 18px;">学习阶段</span>
+    </div>
+</div>
+
+<div class="row palette" style="margin: 0;color: #404040; background: #fff; margin-bottom: 15px;">
+    <div class="col-xs-2 hi"></div>
+    <div class="col-xs-10"><%-user.userName%></div>
+</div>
+<div style="padding: 10px 5px;background: #fff;border: 1px solid #ddd;">
+    <div class="row" style="border-bottom: 1px solid #ddd; margin-left: 20px;">
+        <div class="radio col-xs-3" style="color: #666;padding-left: 0;padding-right: 0;">
+            学习阶段
+        </div>
+        <div class="radio col-xs-5" style="color: #222; padding-left: 0;padding-right: 0;">
+            <%for(var i=0;i<stage.length;i++){%>
+            <%=stage[i].name%>
+            <%}%>
+        </div>
+        <div class="radio col-xs-4" style="color: #3e94db;text-align: center;">
+            <a  style="color: #3e94db;" href="learntarget.html?file=learntarget1_edit"> 修改></a>
+        </div>
+    </div>
+    <div class="row" style="border-bottom: 1px solid #ddd; margin-left: 20px;">
+        <div class="radio col-xs-3" style="color: #666;padding-left: 0;padding-right: 0;">
+            应试学习
+        </div>
+        <div class="radio col-xs-5" style="color: #222; padding-left: 0;padding-right: 0;">
+            <%for(var i=0;i<target.length;i++){%>
+            <%=target[i].name%>
+            <%}%>
+        </div>
+        <div class="radio col-xs-4" style="color: #3e94db;text-align: center;padding-left: 0;">
+            <a  style="color: #3e94db;" href="learntarget.html?file=learntarget2_edit">  修改/完善>></a>
+        </div>
+    </div>
+    <div class="row" style="margin-left: 20px;">
+        <div class="radio col-xs-3" style="color: #666;padding-left: 0;padding-right: 0;">
+            兴趣能力
+        </div>
+        <div class="radio col-xs-5" style="color: #222; padding-left: 0;padding-right: 0;">
+            <%for(var i=0;i<interest.length;i++){%>
+            <%=interest[i].name%>
+            <%}%>
+        </div>
+        <div class="radio col-xs-4" style="color: #3e94db;text-align: center;padding-left: 0;">
+            <a  style="color: #3e94db;" href="learntarget.html?file=learntarget3_edit">  修改/完善>></a>
+        </div>
+    </div>
+
+</div>
+    <div class="row palette" id="next"><a class="btn btn-info btn-lg btn-block" thehref="findcourse.html">开始学习</a></div>
+</div>

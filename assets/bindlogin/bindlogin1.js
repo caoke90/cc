@@ -36,6 +36,9 @@ define(function(require, exports, module){
             $("#login-name",this.context).on("blur",function(){
                 var dom=this
                 the.nameCheck=false
+                if($(this).val()==""){
+                    return;
+                }
                 var telePhone=this.value
                 if(!(/^[A-Za-z\u4e00-\u9fa5][A-Za-z0-9\u4e00-\u9fa5_\\-]{1,15}$/.test(telePhone))){
                     the.showdialog1("2-16个字符或汉字组成",this)
@@ -69,6 +72,9 @@ define(function(require, exports, module){
             the.passCheck=false
             $("#login-pass",this.context).on("blur",function(){
                 the.passCheck=false
+                if($(this).val()==""){
+                    return;
+                }
                 var dom=this
                 var telePhone=this.value
                 if(!(/^[\S]{6,16}$/.test(telePhone))){
@@ -88,10 +94,14 @@ define(function(require, exports, module){
             the.telephoneCheck=false;
             $("#login-telephone",the.context).on("blur",function(){
                 the.telephoneCheck=false;
+                if($(this).val()==""){
+                    return;
+                }
                 var telePhone=this.value
                 var dom=this
                 if(!(/^1[3|4|5|8]\d{9}$/.test(telePhone))){
-                    the.showdialog1("手机号码不正确，请重新输入",this)
+                    the.telephoneCheck=false;
+//                    the.showdialog1("手机号码不正确，请重新输入",this)
                     the.showdialog3(the.telephoneCheck,dom)
                     return;
                 }else{
@@ -122,6 +132,9 @@ define(function(require, exports, module){
             the.codeCheck=false
             $("#login-code",this.context).on("blur",function(){
                 the.codeCheck=false
+                if($(this).val()==""){
+                    return;
+                }
                 var dom=this
                 if(dom.value.length==6){
                     $.ajax({
@@ -176,7 +189,7 @@ define(function(require, exports, module){
                         }else if(msg == 'three'){
                             the.showdialog2("请于上次获取验证码一分钟之后再获取")
                         }else{
-                            the.showdialog2("短信验证码发送失败，重新获取")
+                            the.showdialog2("短信验证码发送失败，请重新获取")
                         }
 
                     },
@@ -219,7 +232,7 @@ define(function(require, exports, module){
                 }
 
                 $.ajax({
-                    url:weixinUrl+"/login/bindRegister.do",
+                    url:weixinUrl+"/login/bindRegister",
                     dataType : "jsonp",
                     data:{
                         type:"jsonp",
@@ -247,12 +260,12 @@ define(function(require, exports, module){
         },
         //设置coolie
         setCookie:function(json){
-
+            require("jquery.cookie");
             if(typeof json=="string"){
                 json=JSON().parse(json)
             }
             for(var k in json){
-                $.cookie(k,json[k])
+                $.cookie(k,json[k], { expires:7,path: location.host.replace(/\w*/,"")});
             }
         },
         //60秒重新发送

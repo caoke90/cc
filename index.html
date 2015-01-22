@@ -17,8 +17,10 @@
 </head>
 <body>
 <div class="col-xs-12">
-    <h5>节点控制框架cc.js<p>特殊的网页渲染节点cc.Div</p></h5>
-    <p>cc.Div是专门用于网页渲染的特殊节点，下面是个简单例子，源码都在页面上</p>
+    <h5>节点控制框架cc.js</h5><small>特殊的网页渲染节点cc.Div </small><br/>
+    <small>cc.Div是专门用于网页渲染的特殊节点，下面是个简单例子，源码都在页面上</small>
+    <br/>
+    <small>Made by m3m4_ck</small>
 
 </div>
 </body>
@@ -33,7 +35,7 @@
                 url:location.href
             }
             this.tpl=tpl||this.tpl
-            this.context=$("<div>").wrapInner( ejs.render(this.tpl,this.data) )
+            this.context=$("<div></div>").wrapInner( ejs.render(this.tpl,this.data) )
 
             var the=this
             the.clickNum=0;
@@ -56,7 +58,7 @@
                 '<div emit="self">' +
                 '<div class="demo2">添加子节点（我是父节点）</div>' +
                 '</div>' +
-                '<div emit="body" class="col-xs-12" recive="place1">node</div>',
+                '<div emit="body" class="col-xs-12" recive="place1"></div>',
         data:null,
         init:function(data,tpl){
             this._super()
@@ -65,7 +67,7 @@
                 url:location.href
             }
             this.tpl=tpl||this.tpl
-            this.context=$("<div>").wrapInner( ejs.render(this.tpl,this.data) )
+            this.context=$("<div>"+ejs.render(this.tpl,this.data)+"</div>")
             var the=this
 
             var node=new Node1()

@@ -10,7 +10,7 @@ define(function(require, exports, module){
     //每个scene对应一个页面
     var Scene=cc.Div.extend({
         tpl:require("./learntarget.html"),
-
+        body:"body",
         data:null,
         init:function(data,tpl){
             this._super()
@@ -31,6 +31,7 @@ define(function(require, exports, module){
             var the=this;
 
         },
+
         //设置coolie
         setCookie:function(json){
 

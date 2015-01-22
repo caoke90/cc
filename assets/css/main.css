@@ -1,5 +1,22 @@
 /*学习目标*/
-.mubiao1{background: url("../images/mubiao_1.png");background-size:291px 32px; width: 291px; height: 32px}
+body{overflow-x: hidden;}
+.mubiao1{background: url("../images/mubiao_1.png");background-size:100%; width: 291px; height: 32px}
+.mubiao2{background: url("../images/mubiao_2.png");background-size:100%; width: 291px; height: 30px}
+.mubiao3{background: url("../images/mubiao_3.png");background-size:100%; width: 291px; height: 30px}
+.play_bg{background: url("../images/play_bg.png");width: 100%; height: 222px; background-size: 100% 100%;}
+.ui-search{background: url("../images/search.png"); width: 16px;height: 16px;background-size: 100% 100%;}
+.hi{background: url("../images/hi.png");width: 45px; height: 38px; background-size: 100% 100%;}
+.free{background: url("../images/free.png");width: 16px; height: 16px; background-size: 100% 100%;}
+.liwu{background: url("../images/liwu.png");width: 16px; height: 16px; background-size: 100% 100%; }
+.telep{background: url("../images/telep.png");width: 25px; height: 25px; background-size: 100% 100%; }
+.dizhi{background: url("../images/dizhi.png");width: 25px; height: 25px; background-size: 100% 100%; }
+.point{background: url("../images/point.png");width: 25px; height: 25px; background-size: 100% 100%; }
+.cart1{background: url("../images/cart1.png");background-size:100%; width: 291px; height: 30px}
+.cart2{background: url("../images/cart2.png");background-size:100%; width: 291px; height: 30px}
+.cart3{background: url("../images/cart3.png");background-size:100%; width: 291px; height: 30px}
+.deng{background: url("../images/deng.png");background-size:100%; width: 41px; height: 41px;display: block;}
+.maozi{background: url("../images/maozi.png");background-size:100%; width: 26px; height: 20px;display: block;}
+.stickup{position: fixed;width: 100%;z-index: 10;}
 .list1{
     background: #fff; border-bottom: 1px solid #ddd;padding: 8px 0; padding-left: 20px; font-size: 14px;
     overflow: hidden;
@@ -8,9 +25,26 @@
     color: #4b9bdd;padding-left: 10px; font-size: 14px; margin: 5px;
 }
 .list1 dl{
-
 }
 .list1 dl dd{
     padding-top: 2px;
     padding-bottom: 2px
+}
+.login-form .login-field-icon {
+    position: absolute;
+    top: 3px;
+    left: 15px;
+    font-size: 16px;
+    color: #bfc9ca;
+    -webkit-transition: all .25s;
+    transition: all .25s;
+}
+.login-form .login-field-icon2 {
+    position: absolute;
+    top: 3px;
+    right: 15px;
+    font-size: 16px;
+    color: #bfc9ca;
+    -webkit-transition: all .25s;
+    transition: all .25s;
 }

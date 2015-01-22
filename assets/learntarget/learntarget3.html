@@ -1,63 +1,26 @@
-
-<div class="row palette palette-peter-river">
-    <div class="col-xs-4">
-        <a href="javascript:history.go(-1)"><span id="re" class="fui-arrow-left text-inverse" style="font-size: 18px;"></span></a>
+<div emit="body">
+    <div class="row palette palette-peter-river">
+        <div class="col-xs-4">
+            <a href="javascript:history.go(-1)"><span id="re" class="fui-arrow-left text-inverse" style="font-size: 18px;"></span></a>
+        </div>
+        <div class="col-xs-6 text-inverse">
+            <span style="font-size: 18px;">兴趣能力</span>
+        </div>
     </div>
-    <div class="col-xs-6 text-inverse">
-        <span style="font-size: 18px;">学习阶段</span>
+
+    <div class="row palette" style="margin: 0;">
+        <div class="mubiao3"></div>
     </div>
+
+    <div class="row palette" style="padding-left: 5px;padding-right: 5px;" id="box">
+        <%for(var i=0;i<content.length;i++){%>
+        <label class="radio col-xs-4" style="padding-left: 15px;">
+            <input type="checkbox" name="optionsRadios" value="option1" list="<%-i%>"  data-toggle="radio"  >
+            <span style="color: #5d5d5d;"><%-content[i].name%></span>
+        </label>
+        <%}%>
+    </div>
+
+    <div class="row palette" id="next"><a class="btn btn-info btn-lg btn-block" href="learntarget.html?file=learntarget4">完成</a></div>
 </div>
 
-<div class="row" style="padding:10px 0; background: #fff;">
-    <div class="col-xs-1" style="text-indent: 15px;">
-        <span  class="fui-check-circle" style="color: #47cfcf; font-size: 24px;"></span>
-    </div>
-    <div class="col-xs-9" style="color: #404040; margin-left: 20px; ">
-            <h4 class="tile-title"  style="font-size: 12px;">绑定成功（注册成功）</h4>
-            <p class="tile-title" style="font-size: 12px;">完善学习目标，更好的帮您找到优质课程</p>
-    </div>
-</div>
-
-<div class="row palette" style="margin: 0;">
-    <div class="mubiao1"></div>
-</div>
-
-<div class="row list1">
-    <h4>职业</h4>
-    <dl>
-        <dd class="col-xs-4">职业></dd>
-    </dl>
-</div>
-<div class="row list1">
-    <h4>大学</h4>
-    <dl>
-        <dd class="col-xs-4">大学></dd>
-    </dl>
-</div>
-<div class="row list1">
-    <h4>高中</h4>
-    <dl>
-        <dd class="col-xs-4">高一></dd>
-        <dd class="col-xs-4">高二></dd>
-        <dd class="col-xs-4">高三></dd>
-    </dl>
-</div>
-<div class="row list1">
-    <h4>初中</h4>
-    <dl>
-        <dd class="col-xs-4">初一></dd>
-        <dd class="col-xs-4">初二></dd>
-        <dd class="col-xs-4">初三></dd>
-    </dl>
-</div>
-<div class="row list1">
-    <h4>小学</h4>
-    <dl>
-        <dd class="col-xs-4">一年级></dd>
-        <dd class="col-xs-4">二年级></dd>
-        <dd class="col-xs-4">三年级></dd>
-        <dd class="col-xs-4">四年级></dd>
-        <dd class="col-xs-4">五年级></dd>
-        <dd class="col-xs-4">六年级></dd>
-    </dl>
-</div>

@@ -1,0 +1,24 @@
+<div emit="body">
+    <header style="position: relative;top: 0; z-index: 10;opacity: 0.9;height: 51px;">
+        <div class="row palette palette-peter-river stickup">
+            <div class="col-xs-3">
+                <a href="javascript:history.go(-1)"><span id="re" class="fui-arrow-left text-inverse" style="font-size: 18px;"></span></a>
+            </div>
+            <div class="col-xs-6 text-inverse">
+                <span style="font-size: 18px;">修改学习阶段</span>
+            </div>
+        </div>
+    </header>
+<%for(var i=0;i<content.length;i++){%>
+<div class="row list1">
+    <h4><%-content[i].name%></h4>
+    <dl>
+        <%for(var k in content[i].childStages){%>
+        <a href="learntarget.html?file=learntarget4" taregrt_id="<%-content[i].childStages[k].id%>" style="color:#404040;"><dd class="col-xs-4"> <%-content[i].childStages[k].name%></dd></a>
+        <%}%>
+    </dl>
+</div>
+<%}%>
+<div class="row palette" > </div>
+<div class="row palette" > </div>
+</div>

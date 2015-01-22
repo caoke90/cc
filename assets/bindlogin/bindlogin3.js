@@ -16,13 +16,54 @@ define(function(require, exports, module){
         init:function(data,tpl){
             this._super()
             //转化成数组
-            this.data={
-                url:location.href
+            this.data=data||{
+                content:[]
             }
             this.tpl=tpl||this.tpl
             this.context=$("<div>"+ejs.render(this.tpl,this.data)+"</div>")
-            $("#re",this.context).on("click",function(){
 
+            this.initAnimate()
+            if(!data){
+                //没有数据，重新渲染
+                this.getJsonp()
+            }
+        },
+        //交互事件
+        initAnimate:function(){
+            var the=this
+
+
+        },
+        //重新渲染页面
+        renderData:function(data){
+            var parent= this.getParent()
+            this.removeFromParent()
+            var sprite=new Scene()
+            sprite.body=this.body
+            sprite.init(data)
+            parent.addChild(sprite)
+        },
+        //获取数据
+        getJsonp:function(){
+            var the=this;
+            $.ajax({
+                url:weixinUrl+"/target/getStages",
+                dataType : "jsonp",
+                data:{
+                    type:"jsonp"
+                },
+                success:function(data){
+                    if(data.code==0){
+                        cc.log("right")
+                        the.renderData(data)
+                    }else{
+                        the.showdialog2(data.msg)
+                        cc.log("wrong")
+                    }
+                },
+                error:function(data){
+                    the.showdialog2("请求数据超时")
+                }
             })
         }
     })

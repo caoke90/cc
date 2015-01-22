@@ -1,0 +1,22 @@
+<div emit="body">
+    <div class="row palette palette-peter-river">
+        <div class="col-xs-4">
+            <a href="javascript:history.go(-1)"><span id="re" class="fui-arrow-left text-inverse" style="font-size: 18px;"></span></a>
+        </div>
+        <div class="col-xs-6 text-inverse">
+            <span style="font-size: 18px;">兴趣能力修改</span>
+        </div>
+    </div>
+
+    <div class="row palette" style="padding-left: 5px;padding-right: 5px;" id="box">
+        <%for(var i=0;i<content.length;i++){%>
+        <label class="radio col-xs-4" style="padding-left: 15px;">
+            <input type="checkbox" name="optionsRadios" value="option1" list="<%-i%>"  data-toggle="radio"  >
+            <span style="color: #5d5d5d;"><%-content[i].name%></span>
+        </label>
+        <%}%>
+    </div>
+
+    <div class="row palette" id="next"><a class="btn btn-info btn-lg btn-block" href="learntarget.html?file=learntarget4">保存修改</a></div>
+</div>
+
