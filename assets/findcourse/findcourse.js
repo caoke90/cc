@@ -8,12 +8,11 @@
 
 define(function(require, exports, module){
     cc.log(location.href)
-        //搜索key记录
+    //搜索key记录
     var searchInfo=cc.Div.extend({
         tpl:'<div class="col-xs-12" emit="info"><span class="col-xs-11"><%-value%></span><span class="fui-cross-circle"></span></div>',
         init:function(data,tpl){
             this._super()
-
             this.data={value:data }
             this.context=$("<div>"+ejs.render(this.tpl,this.data)+"</div>")
             var the=this
@@ -49,25 +48,37 @@ define(function(require, exports, module){
         tpl:require("./nav.html"),
         len:0,
         len2:0,
-        init:function(data,qid){
+        init:function(data,tpl){
             this._super()
-            this.qid=qid
-            this.data1={
-                type:"jsonp",
-                parentId:qid||-1
-            }
-            if(!data){
-                this.data={}
-                this.data.listhead=[]
-                this.getparentJsonp()
+
+            var the=this
+            //获取导航
+            if(!this.listitems){
+                async.series({
+                    parent:this.getparentJsonp(-1)
+                },function(err,results){
+                    the.listhead=results.parent
+                    if(!the.listitems){
+                        var arr=[]
+                        $(results.parent.content).each(function(k,v){
+                            arr.push(the.getparentJsonp(v.id))
+                        })
+                        async.series(arr,function(err,results2){
+                            the.listitems=results2
+                            the.restart()
+                        })
+                    }
+                })
                 return;
             }
-            this.data=data
-            this.context=$("<div>"+ejs.render(this.tpl,this.data)+"</div>")
-            var the=this
+            cc.log(this.listhead)
+            cc.log(this.listitems)
+
+            this.context=$("<div>"+ejs.render(this.tpl,this)+"</div>")
 
             $(".listhead li",the.context).each(function(k,v){
                 $(this).on("click",function(){
+                    the.getParent().searchMulu($(this).attr("query"))
                     $(".listhead li",the.context).removeClass("on")
                     $(this).addClass("on")
                     $(".listitem",the.context).hide()
@@ -75,70 +86,46 @@ define(function(require, exports, module){
                     return false
                 })
             })
+            $(".listitem li",the.context).each(function(){
+                $(this).on("click",function(){
+                    the.getParent().searchMulu($(this).attr("query"))
+                    $(".listitem li",the.context).removeClass("on")
+                    $(this).addClass("on")
+                    return false
+                })
+            })
         },
         //获取数据
         getparentJsonp:function(id){
             var the=this;
-            $.ajax({
-                url:weixinUrl+"/dc/courseCategory",
-                dataType : "jsonp",
-                data:this.data1,
-                success:function(data){
-                    if(data.code==0){
-                        the.len=data.content.length
-                        if(data.content.length>0){
-                            the.data.listhead[0]=data.content
-                            for(var i=0;i<data.content.length;i++){
-                                the.getChildJsonp(data.content[i].id,i+1)
-                            }
-
+            return function(callback){
+                $.ajax({
+                    url:weixinUrl+"/dc/courseCategory",
+                    dataType : "jsonp",
+                    data:{
+                        type:"jsonp",
+                        parentId:id||-1
+                    },
+                    success:function(data){
+                        if(data.code==0){
+                            callback(null,data)
+//                            the.len=data.content.length
+//                            if(data.content.length>0){
+//                                the.data.listhead[0]=data.content
+//                                for(var i=0;i<data.content.length;i++){
+//                                    the.getChildJsonp(data.content[i].id,i+1)
+//                                }
+//                            }
+                        }else{
+                            callback(data.msg)
+                            the.showdialog2(data.msg)
+                            cc.log("wrong")
                         }
-                    }else{
-                        the.showdialog2(data.msg)
-                        cc.log("wrong")
+                    },
+                    error:function(data){
+                        the.showdialog2("请求数据超时")
                     }
-                },
-                error:function(data){
-                    the.showdialog2("请求数据超时")
-                }
-            })
-        },
-        getChildJsonp:function(id,i){
-            var the=this;
-            $.ajax({
-                url:weixinUrl+"/dc/courseCategory",
-                dataType : "jsonp",
-                data:{
-                    type:"jsonp",
-                    parentId:id
-                },
-                success:function(data){
-                    the.len2++
-                    if(data.code==0){
-                        cc.log("right")
-                        the.data.listhead[i]=data.content
-                        the.renderData()
-                    }else{
-                        the.showdialog2(data.msg)
-                        cc.log("wrong")
-                    }
-                },
-                error:function(data){
-                    the.len2++
-                    the.showdialog2("请求数据超时")
-                }
-            })
-
-        },
-        //重新渲染页面
-        renderData:function(){
-            var the=this
-            if(the.len2==the.len){
-                var parent= this.getParent()
-                this.removeFromParent()
-                var sprite=new Nav()
-                sprite.init(the.data,the.qid)
-                parent.addChild(sprite)
+                })
             }
 
         }
@@ -151,125 +138,220 @@ define(function(require, exports, module){
         body:"body",
         init:function(data,tpl){
             this._super()
+            this.type="search";
             //默认搜索条件
             this.data1={
                 type:"jsonp",
-                query:getQueryString("query")||"四级英语",
+                query:getQueryString("query")||"",
                 sortField:"1",
                 from:"0",
                 size:"6"
             }
-            //转化成数组
-            this.data=data||{
-                content:[],
-                data1:this.data1
+
+            this.data2={
+                type:"jsonp",
+                firstLevel:"0",
+                secondLevel:"0",
+                sortField:"1",
+                priceType:"-1",
+                from:"0",
+                pageSize:"6"
             }
 
+            //转化成数组
             this.tpl=tpl||this.tpl
-            this.context=$("<div>"+ejs.render(this.tpl,this.data)+"</div>")
+            this.context=$("<div>"+ejs.render(this.tpl,this)+"</div>")
 
             require("dialog-min");
             require("ui-dialog.css");
 
             var node=new Nav()
-            node.init(null,-1)
+            node.init()
             this.addChild(node)
 
             this.searchJsonp()
             this.initAnimate()
             this.nodeArr1=[]
             this.nodeArr2=[]
-
-//            if(!data){
-//                //没有数据，重新渲染
-//                this.getJsonp()
-//            }
-
-//
+        },
+        //搜索目录
+        searchMulu:function(query){
+            this.type="mulu";
+            var arr=query.split("_")
+            this.data2.firstLevel=arr[0]
+            this.data2.secondLevel=arr[1]
+            this.searchJsonp()
         },
         //滚动加载数据
         addJsonp:function(){
-            var the=this;
-            this.data1.from+=3
-            $.ajax({
-                url:weixinUrl+"/dc/searchCourse",
-                dataType : "jsonp",
-                data:the.data1,
-                success:function(data){
-                    if(data.code==0){
-                        if(data.content&&data.content.resultList.length>0){
-                            var node=new Info()
-                            node.init(data)
-                            the.addChild(node)
-                            the.nodeArr2.push(node)
+            if(this.type=="search"){
+                var the=this;
+                this.data1.from+=3
+                $(".loadbtn",the.context).hide()
+                $(".loading",the.context).show()
+                $.ajax({
+                    url:weixinUrl+"/dc/searchCourse",
+                    dataType : "jsonp",
+                    data:the.data1,
+                    success:function(data){
+                        if(data.code==0){
+                            if(data.content.resultList&&data.content.resultList.length>0){
+                                var node=new Info()
+                                node.init(data)
+                                the.addChild(node)
+                                the.nodeArr2.push(node)
 
-                            if(data.content.resultList.length==the.data1.size){
-                                the.loading=false
-                                $(".loadbtn",the.context).show()
+                                if(data.content.resultList.length==the.data1.size){
+                                    the.loading=false
+                                    $(".loadbtn",the.context).show()
+                                    $(".loading",the.context).hide()
+                                }else{
+                                    the.loading=true
+                                    $(".loading",the.context).text("没有更多内容了")
+                                    $(".loadbtn",the.context).off("click")
+                                }
+                            }else{
+                                the.loading=true
+                                $(".loading",the.context).text("没有更多内容了")
+                                $(".loadbtn",the.context).off("click")
+                            }
+//                        the.renderData(data)
+                        }else{
+                            the.showdialog2(data.msg)
+                            cc.log("wrong")
+                        }
+                    },
+                    error:function(data){
+                        the.showdialog2("请求数据超时")
+                    }
+                })
+            }else{
+                var the=this;
+                this.data2.from+=3
+                $(".loadbtn",the.context).text("正在加载请稍后……")
+                $.ajax({
+                    url:weixinUrl+"/dc/listCourse",
+                    dataType : "jsonp",
+                    data:the.data2,
+                    success:function(data){
+                        if(data.code==0){
+                            if(data.content.resultList&&data.content.resultList.length>0){
+                                var node=new Info()
+                                node.init(data)
+                                the.addChild(node)
+                                the.nodeArr2.push(node)
+                                if(data.content.resultList.length==the.data2.size){
+                                    the.loading=false
+                                    $(".loadbtn",the.context).show()
+                                    $(".loadbtn",the.context).text("点击加载更多")
+                                }else{
+                                    the.loading=true
+                                    $(".loadbtn",the.context).text("没有更多内容了")
+                                    $(".loadbtn",the.context).off("click")
+                                }
                             }else{
                                 the.loading=true
                                 $(".loadbtn",the.context).text("没有更多内容了")
+                                $(".loadbtn",the.context).off("click")
                             }
-                        }else{
-                            the.loading=true
-                            $(".loadbtn",the.context).text("没有更多内容了")
-                        }
-
-                        cc.log(data)
 //                        the.renderData(data)
-                    }else{
-                        the.showdialog2(data.msg)
-                        cc.log("wrong")
+                        }else{
+                            the.showdialog2(data.msg)
+                            cc.log("wrong")
+                        }
+                    },
+                    error:function(data){
+                        the.showdialog2("请求数据超时")
                     }
-                },
-                error:function(data){
-                    the.showdialog2("请求数据超时")
-                }
-            })
+                })
+            }
         },
+
         //获取搜索数据
         searchJsonp:function(){
-            var the=this;
-            this.data1.from=0;
-
-            $.ajax({
-                url:weixinUrl+"/dc/searchCourse",
-                dataType : "jsonp",
-                data:the.data1,
-                success:function(data){
-                    if(data.code==0){
-                        if(data.content&&data.content.resultList.length>0){
-                            cc.localStorage("searchkey",the.data1.query)
-                            $(the.nodeArr2).each(function(k,v){
-                                v.removeFromParent()
-                            })
-                            the.nodeArr2=[]
-                            var node=new Info()
-                            node.init(data)
-                            the.addChild(node)
-                            the.nodeArr2.push(node)
-                            if(data.content.resultList.length==the.data1.size){
-                                the.loading=false
-                                $(".loadbtn",the.context).show()
+            if(this.type=="search"){
+                var the=this;
+                this.data1.from=0;
+                $.ajax({
+                    url:weixinUrl+"/dc/searchCourse",
+                    dataType : "jsonp",
+                    data:the.data1,
+                    success:function(data){
+                        if(data.code==0){
+                            if(data.content.resultList){
+                                cc.localStorage("searchkey",the.data1.query)
+                                $(the.nodeArr2).each(function(k,v){
+                                    v.removeFromParent()
+                                })
+                                the.nodeArr2=[]
+                                var node=new Info()
+                                node.init(data)
+                                the.addChild(node)
+                                the.nodeArr2.push(node)
+                                if(data.content.resultList.length==the.data1.size){
+                                    the.loading=false
+                                    $(".loadbtn",the.context).show()
+                                }else{
+                                    the.loading=true
+                                    $(".loadbtn",the.context).hide()
+                                }
                             }else{
-                                the.loading=true
-                                $(".loadbtn",the.context).hide()
+                                the.showdialog2("没有搜索到"+the.data1.query+" 的相关内容")
                             }
-                        }else{
-                            the.showdialog2("没有搜索到"+the.data1.query+" 的相关内容")
-                        }
-
-                        cc.log(data)
+                            cc.log(data)
 //                        the.renderData(data)
-                    }else{
-                        the.showdialog2(data.msg)
-                        cc.log("wrong")
+                        }else{
+                            the.showdialog2(data.msg)
+                            cc.log("wrong")
+                        }
+                    },
+                    error:function(data){
+                        the.showdialog2("请求数据超时")
                     }
-                },
-                error:function(data){
-                    the.showdialog2("请求数据超时")
-                }
-            })
+                })
+            }else{
+                var the=this;
+                this.data2.from=0;
+                $.ajax({
+                    url:weixinUrl+"/dc/listCourse",
+                    dataType : "jsonp",
+                    data:the.data2,
+                    success:function(data){
+                        if(data.code==0){
+                            if(data.content.resultList){
+                                $(the.nodeArr2).each(function(k,v){
+                                    v.removeFromParent()
+                                })
+                                the.nodeArr2=[]
+                                var node=new Info()
+                                node.init(data)
+                                the.addChild(node)
+                                the.nodeArr2.push(node)
+                                cc.log(data.content.resultList.length)
+                                cc.log(the.data1.size)
+                                if(data.content.resultList.length==the.data1.size){
+                                    the.loading=false
+                                    $(".loadbtn",the.context).show()
+                                }else{
+                                    the.loading=true
+                                    $(".loadbtn",the.context).hide()
+                                }
+                            }else{
+                                the.showdialog2("没有搜索到 分类相关的内容")
+                            }
+
+//                        the.renderData(data)
+                        }else{
+                            the.showdialog2(data.msg)
+                            cc.log("wrong")
+                        }
+                    },
+                    error:function(data){
+                        the.showdialog2("请求数据超时")
+                    }
+                })
+            }
+
         },
         //交互事件
         initAnimate:function(){
@@ -341,12 +423,18 @@ define(function(require, exports, module){
             //按销量
             $("#anxiaoliang",the.context).on("click",function(){
                 the.data1.sortField=3
+                the.data2.sortField=3
                 the.searchJsonp()
+                $(".on",the.context).removeClass("on")
+                $(this).addClass("on")
             })
             //按价格
             $("#anjiage",the.context).on("click",function(){
                 the.data1.sortField=2
+                the.data2.sortField=2
                 the.searchJsonp()
+                $(".on",the.context).removeClass("on")
+                $(this).addClass("on")
             })
             //清除所有记录
             $("#clear",the.context).on("click",function(){
@@ -364,17 +452,24 @@ define(function(require, exports, module){
             })
             //下拉导航
             $("#alllist",the.context).on("click",function(){
-                $(".bggray",the.context).show()
-                $(".blo5",the.context).show()
-                $("body").on("click",function(){
-                    $(".bggray",the.context).hide()
-                    $(".blo5",the.context).hide()
-                    $("body").off("click")
-                })
-                return false
+                $(".on",the.context).removeClass("on")
+                $(this).addClass("on")
+                if($(".bggray",the.context).css("display")=="none"){
+                    $(".bggray",the.context).show()
+                    $(".blo5",the.context).show()
+                    return false;
+                }
+            })
+            $("#alllist .text",the.context).on("click",function(){
+                the.searchMulu("0_0")
             })
 
-
+            $(".conte",the.context).on("click",function(){
+                if($(".bggray",the.context).css("display")=="block"){
+                    $(".bggray",the.context).hide()
+                    $(".blo5",the.context).hide()
+                }
+            })
 
             //下滑加载数据+
             the.loading=false;
@@ -385,6 +480,13 @@ define(function(require, exports, module){
                         the.addJsonp()
                         cc.log("加载数据")
                     }
+                }
+            })
+            $(".loadbtn",the.context).on("click",function(){
+                if(!the.loading){
+                    the.loading=true
+                    the.addJsonp()
+                    cc.log("加载数据")
                 }
             })
 

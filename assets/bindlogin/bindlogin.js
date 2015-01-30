@@ -10,7 +10,6 @@ define(function(require, exports, module){
     //每个scene对应一个页面
     var Scene=cc.Div.extend({
         tpl:require("./bindlogin.html"),
-
         data:null,
         init:function(data,tpl){
             this._super()
@@ -20,9 +19,12 @@ define(function(require, exports, module){
             }
             this.tpl=tpl||this.tpl
             this.context=$("<div>"+ejs.render(this.tpl,this.data)+"</div>")
-;
+
+            require("jquery.cookie");
             require("dialog-min");
             require("ui-dialog.css");
+
+
            this.initAnimate()
         },
         //提交数据
@@ -30,7 +32,6 @@ define(function(require, exports, module){
             var the=this;
             //提交
             $("#tijiao",the.context).on("click",function(){
-
                 the.data.userName=$("#login-name",the.context).val()
                 if(!the.data.userName){
                     the.showdialog1("用户名不能为空",$("#login-name",the.context)[0])
@@ -46,6 +47,7 @@ define(function(require, exports, module){
                     the.showdialog2("next_page不能为空")
                     return;
                 }
+                cc.localStorage("username",the.data.userName)
                 $.ajax({
                     url:weixinUrl+"/login/bindLogin",
                     dataType : "jsonp",
@@ -59,9 +61,12 @@ define(function(require, exports, module){
                         if(data.code==0){
                             cc.log("right")
                             the.setCookie(data.content.cookie)
-                            location.href=data.content.redirectUrl
+                            setTimeout(function(){
+                                location.href=data.content.redirectUrl
+                            },500)
+
                         }else{
-                            the.showdialog2(data.msg)
+                            the.showdialog2("登陆失败"+data.msg)
                             cc.log("wrong")
                         }
                     },
@@ -73,12 +78,11 @@ define(function(require, exports, module){
         },
         //设置coolie
         setCookie:function(json){
-            require("jquery.cookie");
             if(typeof json=="string"){
                 json=JSON().parse(json)
             }
             for(var k in json){
-                $.cookie(k,json[k], { expires:7,path: location.host.replace(/\w*/,"")});
+                $.cookie(k,json[k], { expires:7,domain: location.host.replace(/\w*/,""),path:"/"});
             }
         },
         //气泡提示

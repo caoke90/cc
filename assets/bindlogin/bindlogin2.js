@@ -60,19 +60,22 @@ define(function(require, exports, module){
                         success:function(data){
                             if(data.code==0){
                                 the.codeCheck=true;
-                                the.showdialog3(the.codeCheck,dom)
                             }else{
-                                the.showdialog2(data.mes);
                                 the.codeCheck=false;
-                                the.showdialog3(the.codeCheck,dom)
+                                the.showdialog2("验证码错误"+data.msg);
                             }
+                            the.showdialog3(the.codeCheck,dom)
                         },
                         error:function(){
                             the.showdialog2("验证超时失败")
                         }
                     })
                 }
-            })
+            }).on("input",function(){
+                    if($(this).val().length==6){
+                        $(this).trigger("blur")
+                    }
+                })
             //获取验证码
             $("#login-getcode",the.context).on("click",function(){
                 if(!the.telephoneCheck){
@@ -91,8 +94,14 @@ define(function(require, exports, module){
                             the.showdialog2('<span style="display:inline-block;margin-bottom:5px;">验证码已发送</span><br><span style="display:inline-block;color:#ff6600;padding-left:24px">由于运营商原因，手机短信可能会有延迟，请耐心等待</span>')
                             $("#login-time",the.context).show();
                             the.cutTime(59)
+                        }else if(msg == 'error.sendmsg.maxtimes'){
+                            the.showdialog2("同一个手机号码一天只可接收三次手机验证码")
+                        }else if(msg == 'error.verifycode.wrong'){
+                            the.showdialog2("验证码有误")
+                        }else if(msg == 'three'){
+                            the.showdialog2("请于上次获取验证码一分钟之后再获取")
                         }else{
-                            the.showdialog2(data.msg)
+                            the.showdialog2("短信验证码发送失败，请重新获取")
                         }
 
                     },

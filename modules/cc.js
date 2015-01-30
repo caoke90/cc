@@ -524,8 +524,10 @@ cc.Layer=cc.Node.extend({
 cc.Scene=cc.Node.extend({
 })
 //context 包含html文本和事件
+//author caoke https://github.com/caoke90/cc
 cc.Div=cc.Node.extend({
     context:"<div></div>",
+    //渲染开始
     onEnter:function(){
         var the=this
         $("[emit]",the.context).each(function(){
@@ -537,17 +539,16 @@ cc.Div=cc.Node.extend({
             $(this).removeAttr("recive")
         })
         this._super()
-        if(!the.body){
+        if(the.body){
+            $(the.body).append($(the.context).children())
+            the.context= $("[emit_"+the._id+"]",$(the.body)).parent()
+        }else{
             if(the.getParent()&&the.getParent().context){
                 $("[emit_"+the._id+"]",the.context).each(function(){
                     $("[recive_"+the.getParent()._id+"="+$(this).attr("emit_"+the._id)+"]",the.getParent().context).append($(this))
                 })
                 the.context= $("[emit_"+the._id+"]",the.getParent().context)
             }
-        }else{
-            $(the.body).append($(the.context).children())
-            the.context= $("[emit_"+the._id+"]",$(the.body)).parent()
-
         }
 
     },
@@ -555,6 +556,12 @@ cc.Div=cc.Node.extend({
     onExit:function(){
         this._super()
         $("[emit_"+this._id+"]",this.context.parent()).remove()
+    },
+    //重启
+    restart:function(){
+        this.onExit()
+        this.init()
+        this.onEnter()
     }
 })
 

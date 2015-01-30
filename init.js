@@ -4,7 +4,7 @@ var loginUrl="http://login.neibu.koo.cn"
 var weixinUrl="http://weixin.neibu.koo.cn"
 seajs.config({
     debug: 0,
-    preload: ["cc","seajs-text.js","ejs.min.js"],
+    preload: ["cc","seajs-text.js","ejs.min.js","async.js"],
     // 文件编码
     charset: 'utf-8',
 

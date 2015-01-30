@@ -16,11 +16,15 @@ define(function(require, exports, module){
         init:function(data,tpl){
             cc.log(window.localStorage.getItem("name"))
             this._super()
-            if(!this.user){
+            if(!this._once&&(this._once=!this._once)){
+                this.user={
+                    userName:cc.localStorage("username")||"用户名"
+                }
                 this.getuser()
-                return;
             }
-            this.user=JSON.parse(this.user)
+            if(typeof this.user=="string"){
+                this.user=JSON.parse(this.user)
+            }
             //转化成数组
             this.data={
                 user:this.user,
@@ -50,8 +54,10 @@ define(function(require, exports, module){
                     cc.log(data)
                     if(data.code==0){
                         cc.log("right")
-                        the.user=data.content
-                        the.restart()
+                        if(data.content){
+                            the.user=data.content
+                            the.restart()
+                        }
                     }else{
                         the.showdialog2(data.msg)
                         cc.log("wrong")
@@ -61,12 +67,6 @@ define(function(require, exports, module){
                     the.showdialog2("请求超时")
                 }
             })
-        },
-        //重新渲染
-        restart:function(data){
-            this.init()
-            this.onExit()
-            this.onEnter()
         },
         //交互事件
         initAnimate:function(){
@@ -115,6 +115,7 @@ define(function(require, exports, module){
                 success:function(data){
                     if(data.code==0){
                         cc.log("right")
+                        cc.localStorage("learntargetover","over")
                         location.href=$("#next a",the.context).attr("thehref")
                     }else{
                         the.showdialog2(data.msg)

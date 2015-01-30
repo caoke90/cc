@@ -1,15 +1,9 @@
-/**
- * Created with JetBrains WebStorm.
- * http://192.168.103.112/webroot/bindlogin.html?next_page=http://www.baidu.com#
- */
-
-
 define(function(require, exports, module){
 
 //    require.async("http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css")
     //每个scene对应一个页面
     var Scene=cc.Div.extend({
-        tpl:require("./personset.html"),
+        tpl:require("./personinfo.html"),
         body:"body",
         data:null,
         init:function(data,tpl){
@@ -91,34 +85,25 @@ define(function(require, exports, module){
             require("stickUp.js")
             $('.stickup',the.context).stickUp();
 
-            $("#tijiao",the.context).on("click",function(){
+            $("#logout",the.context).on("click",function(){
                 $.ajax({
-                    url:weixinUrl+"/myinfo/saveinfo",
+                    url:loginUrl+"/sso/logout.do?type=cross",
                     dataType : "jsonp",
                     data:{
-                        type:"jsonp",
-                        savetype:"1",
-                        realName:$("#realName",the.context).val(),
-                        sex:$("#sex",the.context).val(),
-                        region:$("#region",the.context).val(),
-                        // mobile:$("#mobile",the.context).val(),
-                        address:$("#address",the.context).val()
+                        type:"jsonp"
                     },
                     success:function(data){
-                        if(data.code==0){
-                            cc.log("right")
-                            the.showdialog2("设置成功");
-                            history.go(-1);
-                        }else{
-                            the.showdialog2(data.msg)
-                            cc.log("wrong")
-                        }
+                        location.href = 'bindlogin.html';
                     },
                     error:function(data){
-                        the.showdialog2("请求超时")
+                        if(data.status == '200') {
+                            location.href = 'bindlogin.html';
+                        }else {
+                            the.showdialog2("请求超时");
+                        }
                     }
-                })
-            })
+                });
+            });
 
         },
 

@@ -1,27 +1,16 @@
-<div emit="body" class="k_container">
+<div emit="body">
     <style>
         body{background: #ffffff;}
-        .blo1{
-            background: #3e94db;
-            padding-left: 13px;
-            padding-top: 6.5px;
-            padding-bottom: 6.5px;
-        }
+        .blo1{background: #3e94db;padding-left: 20px;padding-top: 10px;padding-bottom: 10px;}
         .blo1 .form-group{position: relative;width: 100%;}
         .blo1 .ui-search{position: absolute; top: 8px;
             left: 15px;font-weight: normal;color: #fff;z-index: 10;}
         .blo1 .fui-cross-circle{position: absolute; top: 0px;right:15px;color: #3e94db;}
 
-        .blo1 input{background: #2886cc;text-indent: 30px;color: #fff;border: 0;font-size: 14px;height: 32px;border-radius: 3px;}
-        #search{
-            color: #fff;
-            font-family: "Microsoft Yahei";
-            font-size: 15px;
-            padding-left: 0;
-            line-height: 32px;
-        }
+        .blo1 input{background: #167bbf;text-indent: 30px;color: #fff;border: 0;font-size: 14px;height: 32px;}
+        #search{color: #fff;padding-right: 0;text-align: center;font-family: "Microsoft Yahei";}
         .blo2{background: #ffffff;}
-        
+        .blo2 .col-xs-12{border-bottom: 1px solid #ddd;font-size: 14px;padding-top: 8px;padding-bottom: 8px;}
         .blo2 .fui-cross-circle{color: #999;}
         .blo2 .btn{width: 140px;height:40px;border: 1px solid #ddd;border-radius: 10px;}
 
@@ -33,30 +22,18 @@
 
         .blo4{font-family:"Microsoft Yahei";}
         .blo4 a{color: #404040;font-family:"Microsoft Yahei";}
-        .blo4 .list{border-bottom: 1px solid #ddd;padding: 15px 0 8px 0;}
-        .blo4 .left {
-            text-align: center;
-        }
-        .blo4 .left p{ 
-            font-size: 12px;
-            margin-top: 2px;
-            margin-bottom: 0;
-            text-overflow: ellipsis;
-            overflow: hidden;
-            white-space: nowrap;
-            color: #666;
-        }
-        .blo4 .right{font-size: 13px;padding-left: 3px;}
-        .blo4 .right .t1{color: #404040;min-height:42px;font-size: 13px;}
+        .blo4 .list{border-bottom: 1px solid #ddd;padding-top: 12px;}
+        .blo4 .left{}
+        .blo4 .left p{ font-size: 13px;white-space:nowrap;text-indent: -10px;margin-top: 2px;}
+        .blo4 .right{font-size: 13px;padding-left: 0;}
+        .blo4 .right .t1{color: #404040;min-height:42px;}
         .blo4 .right .t2{position: relative;}
         .blo4 .right strong{color: red;font-size: 15px;margin-right: 5px;}
         .blo4 .right span.free{padding:3px 12px;}
         .blo4 .right span.liwu{padding:3px 12px;}
         .blo4 .right .p_r{position: absolute;right: 0px;color: #3e94db;}
-        .blo4 .right .t3{font-size: 12px;color: #999;padding-top: 2px;}
-        .blo4:after {
-            content:''; display:block; clear:both;
-        }
+        .blo4 .right .t3{font-size: 12px;color: #999;}
+
         .blo5{position: relative;z-index: 10;display: none;}
         .blo5 .list1{padding: 0;background: #fff;margin-right: 10px;border: 1px solid #ddd;}
         .blo5 .list1 ul{width: 100%;padding: 0;text-align: center;margin: 0;}
@@ -66,7 +43,6 @@
 
         .bggray{display: none;}
         .blo5 .listitem{display: none;}
-        .blo5 .listitem li.on{background: #3e94db;}
         .loadbtn{display:none;text-align: center;}
 
         .form-group input[type="text"]::-moz-placeholder {
@@ -78,21 +54,13 @@
         .form-group input[type="text"]::-webkit-input-placeholder {
             color: #efefef;opacity: 0.5;
         }
-        .on{color: #3e94db;}
-        .blo4 .right .t1>a {
-            overflow: hidden;
-text-overflow: ellipsis;
-display: -webkit-box;
--webkit-line-clamp: 2;
--webkit-box-orient: vertical;
-        }
+        .text.on{color: #3e94db;}
     </style>
-    <div class="conte">
-    <div style="width: 100%;height: 87px;">
+    <div style="height: 102px;width: 100%;">
         <div class="stickup" style="z-index: 30;padding: 0;width: 100%;">
             <!--搜索框-->
             <div class="row blo1">
-                <div class="col-xs-10" style="padding-left: 10px;padding-right: 10px;">
+                <div class="col-xs-9" style="padding: 0;padding-left: 10px;">
                     <div class="form-group">
                         <span class="ui-search"></span>
                         <input type="text" value="<%-data1.query%>" placeholder="" class="col-xs-12" id="input"  />
@@ -108,17 +76,17 @@ display: -webkit-box;
                 <div class="col-xs-12" style="text-align: center;"> <span class="btn" id="clear">清空搜索记录</span></div>
             </div>
             <!--导航-->
-            <div class="bggray" style="position:absolute;background:#333;opacity:0.5;width: 100%;height:768px;z-index: 10 "></div>
+            <div class="bggray" style="position:absolute;background:#333;opacity:0.5;width: 100%;height:<%=$(window).height()%>px;z-index: 1 "></div>
             <div class="row blo3">
                 <div class="col-xs-4" style="border-right: 1px solid #ddd;" id="alllist">
-                    <span class="text" query="0_0">全部分类</span>
+                    <span class="text">全部分类</span>
                     <span class="fui-triangle-down" style="color: #3e94db;font-size: 12px;"></span>
                 </div>
                 <div class="col-xs-4" style="border-right: 1px solid #ddd;" id="anxiaoliang">
-                    <span class="text">销量</span>
+                    <span class="text">免费</span>
                 </div>
                 <div class="col-xs-4" id="anjiage">
-                    <span class="text">价格</span>
+                    <span class="text">收费</span>
                 </div>
             </div>
             <div class="row blo5" recive="nav">
@@ -127,11 +95,8 @@ display: -webkit-box;
         </div>
     </div>
 
-    <div class="blo4" recive="list">
+    <div class="row blo4" recive="list">
         <!--list-->
     </div>
-
-        <div class="loadbtn">点击加载更多</div>
-        <div class="loading" style="text-align: center;display: none;"><img src="<%=seajs.data.base%>../assets/images/loading7.gif" />正在加载请稍后</div>
-    </div>
+    <div class="loadbtn">正在加载请稍后……</div>
 </div>

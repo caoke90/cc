@@ -1,0 +1,35 @@
+<div emit="body">
+    <style>
+        body{
+            background: #fff;
+        }
+        .blo2{
+            padding-top: 10px;
+            padding-left: 20px;
+        }
+        .blo2 p{
+            font-size: 14px;margin-bottom: 5px;
+        }
+    </style>
+    <div class="row palette palette-peter-river">
+        <div class="col-xs-4">
+            <a href="javascript:history.go(-1)"><span id="re" class="fui-arrow-left text-inverse" style="font-size: 18px;"></span></a>
+        </div>
+        <div class="col-xs-6 text-inverse">
+            <span style="font-size: 18px;">课程</span>
+        </div>
+    </div>
+
+    <div class="row" style="padding:10px 5px; background: #efefef;">
+        <div class="col-xs-1" style="text-indent: 15px;">
+            <span  class="fui-check-circle" style="color: #3e94db; font-size: 24px;"></span>
+        </div>
+        <div class="col-xs-9" style="color: #3e94db; margin-left: 20px; ">
+            <h4  style="font-size: 17px;">购买成功</h4>
+        </div>
+    </div>
+    <div class="col-xs-12 blo2">
+        <p>请于<%=new Date(time).Format("yyyy年MM月dd日hh点")%></p>
+        <p>登陆<a href="http://www.koo.cn">www.koo.cn</a>收看直播课程</p>
+    </div>
+</div>

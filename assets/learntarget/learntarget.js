@@ -14,6 +14,10 @@ define(function(require, exports, module){
         data:null,
         init:function(data,tpl){
             this._super()
+            if(cc.localStorage("learntargetover")){
+                location.href="learntarget.html?file=learntarget4"
+                return;
+            }
             //转化成数组
             this.data={
                 url:location.href

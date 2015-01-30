@@ -14,25 +14,16 @@
     <link href="assets/css/main.css" rel="stylesheet">
     <!-- 界面js  -->
     <script src="modules/jquery.min.js"></script>
+    <script src="modules/cc.js"></script>
     <script src="modules/sea.js"></script>
     <script src="init.js"></script>
-
 </head>
 <body>
-</body>
 <script>
-    seajs.use(define(function(require,exports,module){
-        require.async("../assets/shopcart/"+(getQueryString("file")||"shopcart.js"),function(back){
-            var scene=new back()
-            scene.body="body"
-            scene.init()
-            var node=cc.Node.create()
-            node.addChild(scene)
-            node.onEnter()
-
-        })
-
-    }));
+    seajs.use("./api",function(Api){
+    })
 
 </script>
+</body>
+
 </html>

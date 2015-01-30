@@ -22,14 +22,13 @@
 </body>
 <script>
     seajs.use(define(function(require,exports,module){
-        require.async("../assets/shopcart/"+(getQueryString("file")||"shopcart.js"),function(back){
+        require.async("../assets/"+(getQueryString("file")||"success.js"),function(back){
             var scene=new back()
             scene.body="body"
             scene.init()
             var node=cc.Node.create()
             node.addChild(scene)
             node.onEnter()
-
         })
 
     }));

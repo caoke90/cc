@@ -1,0 +1,103 @@
+<div emit="body">
+    <style>
+        .blo1{ font-family: "Microsoft Yahei";font-size: 14px;border-bottom: 1px solid #ddd;padding-top: 10px;padding-bottom: 10px;}
+        .blo1 .left{padding: 0; color: #666;}
+        .blo1 .right{color: #404040;padding-left: 0;padding-right: 0;}
+        
+        .blo1 .right .show2{text-align: right;}
+        .blo1 .input1{width: 100%;text-indent: 5px;border: none;}
+        .blo1 .right textarea{width: 100%;font-size: 14px;line-height: 20px;padding-left: 5px; border: none;}
+        .clear {
+            clear: both;
+        }
+        .k_content {
+            background: white;
+        }
+    </style>
+    <div style="height: 51px;">
+        <div class="row palette palette-peter-river stickup" style="width: 100%;z-index: 10;">
+            <div class="col-xs-4">
+                <!--<a href="javascript:history.go(-1)"><span id="re" class="fui-arrow-left text-inverse" style="font-size: 18px;"></span></a>-->
+            </div>
+            <div class="col-xs-6 text-inverse">
+                <span style="font-size: 18px;">个人设置</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="k_content">
+        <div class="col-xs-12 blo1">
+            <div class="col-xs-3 left">
+                <span>手机号</span>
+            </div>
+            <div class="col-xs-9 right">
+                <div class="show2"><%=data1.mobile||''%></div>
+            </div>
+        </div>
+        <div class="col-xs-12 blo1">
+            <div class="col-xs-3 left">
+                <span>用户名</span>
+            </div>
+            <div class="col-xs-9 right">
+                <div class="show2"><%=data1.userName||""%></div>
+            </div>
+        </div>
+        <div class="col-xs-12 blo1">
+            <div class="col-xs-3 left">
+                <span>真实姓名</span>
+            </div>
+            <div class="col-xs-9 right">
+               <div class="show2"><%=data1.realName||"未填写"%></div>
+            </div>
+        </div>
+        <div class="col-xs-12 blo1">
+            <div class="col-xs-3 left">
+                <span>性别</span>
+            </div>
+            <div class="col-xs-9 right">
+                <div class="show2">
+                    <%if(data1.sex=="1"){%>
+                       男
+                    <%}else if(data1.sex=="0"){%>
+                       女
+                    <%}else if(data1.sex=="-1"){%> 
+                        保密
+                    <%}else{%>
+                       未填写
+                    <%}%>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 blo1">
+            <div class="col-xs-3 left">
+                <span>地区</span>
+            </div>
+            <div class="col-xs-9 right">
+                <div class="show2">
+                    <%if(!data1.region){%>
+                        未填写
+                    <%} else {%>
+                        <%=data1.region%>
+                    <%}%>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 blo1">
+            <div class="col-xs-3 left">
+                <span>详细地址</span>
+            </div>
+            <div class="col-xs-9 right">
+                <%if(!data1.address){%>
+                    <div class="show2" style="text-align: right;">未填写</div>
+                <%} else {%>
+                    <div class="show2" style="text-align: left;"><%=data1.address%></div>
+                <%}%>
+            </div>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div class="col-xs-12 palette">
+        <a class="btn btn-block btn-lg btn-info" id="editProfile" href="personset.html?file=personset">完善资料</a>
+        <a class="btn btn-block btn-lg btn-default" id="logout">退出登录</a>
+    </div>
+</div>

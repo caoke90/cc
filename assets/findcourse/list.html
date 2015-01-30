@@ -1,22 +1,28 @@
 
-<%for(var i=0;i<content.resultList.length;i++){
-var item=content.resultList[i];%>
+<%$(content.resultList).each(function(k,v){%>
 <div class="col-xs-12 list" emit="list">
     <div class="col-xs-5 left">
-        <img src="<%-item.img%>" width="104" height="66" />
-        <p>主讲教师：<%=item.teacherName.replace(/\d*?,/g,"")%></p>
+        <a href="?file=xiangq&productId=<%-v.productId%>"><img src="<%-v.img%>" width="104" height="66" /></a>
+        <p>主讲：<%=v.teacherName.replace(/\d*?,/g,"")%></p>
     </div>
     <div class="col-xs-7 right">
-        <div class="t1"><a href="?file=findcourse1&productId=<%-item.productId%>"><%-item.summary%></a></div>
+        <div class="t1"><a href="?file=xiangq&productId=<%-v.productId%>"><%-v.summary%></a></div>
         <div class="t2">
-            <strong>￥<%-item.price%></strong>
-            <span class="liwu"></span>
-            <span class="p_r"><%=item.saleNum%>人购买</span>
+            <%if(v.price==0){%>
+            <strong>￥<%=v.price.toFixed(2)%></strong>
+            <!--<span class="free"></span>-->
+            <%}else{%>
+            <strong>￥<%=v.price.toFixed(2)%></strong>
+            <%}%>
+            <span class="p_r"><%=v.collectNum%>人购买</span>
         </div>
         <div class="t3">
-            <span><%=new Date(item.nextPlayTime).Format("yyyy-MM-dd")%></span>
-            <span><%=new Date(item.nextPlayTime).Format("hh:mm")%>-<%=new Date(item.nextPlayTime+30*60*1000).Format("hh:mm")%></span>
+            <span><%=new Date(v.nextPlayTime).Format("yyyy-MM-dd")%></span>
+            <span><%=new Date(v.nextPlayTime).Format("hh:mm")%> 开始</span>
         </div>
     </div>
 </div>
+<%})%>
+<%if(content.resultList.length==0){%>
+<div emit="list" style="text-align: center;margin-top: 100px;">课程正在建设中……</div>
 <%}%>

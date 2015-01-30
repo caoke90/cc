@@ -136,7 +136,7 @@ define(function(require, exports, module){
                     return;
                 }
                 var dom=this
-                if(dom.value.length==6){
+                if($(this).val().length==6){
                     $.ajax({
                         url:loginUrl+"/sso/verifyMobileCode.do",
                         dataType : "jsonp",
@@ -165,7 +165,11 @@ define(function(require, exports, module){
                     })
                 }
 
-            })
+            }).on("input",function(){
+                    if($(this).val().length==6){
+                        $(this).trigger("blur")
+                    }
+                })
             //获取验证码
             $("#login-getcode",the.context).on("click",function(){
                 var dom=this
@@ -247,7 +251,7 @@ define(function(require, exports, module){
                             the.setCookie(data.content.cookie)
                             location.href=data.content.redirectUrl
                         }else{
-                            the.showdialog2(data.msg)
+                            the.showdialog2("验证失败"+data.msg)
                         }
                     },
                     error:function(){
@@ -265,7 +269,7 @@ define(function(require, exports, module){
                 json=JSON().parse(json)
             }
             for(var k in json){
-                $.cookie(k,json[k], { expires:7,path: location.host.replace(/\w*/,"")});
+                $.cookie(k,json[k], { expires:7,domain: location.host.replace(/\w*/,""),path:"/"});
             }
         },
         //60秒重新发送

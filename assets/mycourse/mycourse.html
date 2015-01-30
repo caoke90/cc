@@ -7,7 +7,15 @@
         .blo4 .list{border-bottom: 1px solid #ddd;padding-top: 12px;}
 
 
-        .blo3{font-family: "Microsoft YaHei";border: 1px solid #ddd; text-align: center;background: #f2f6f9;padding-top: 10px;padding-bottom:10px;font-size: 16px;}
+        .blo3{
+            font-family: "Microsoft YaHei";
+            text-align: center;
+            background: #f2f6f9;
+            font-size: 13px;
+            height: 40px;
+            line-height: 40px;
+            border-bottom: 1px solid #ddd;
+        }
         .blo3 .on{color: #62a8e1;}
     </style>
     <div style="height: 51px;">
@@ -22,43 +30,46 @@
     </div>
     <div style="height: 51px;">
         <div class="blo3" style="width: 100%;z-index: 10;position: fixed;">
+            <div class="col-xs-4" style="border-right: 1px solid #ddd;">
+                <span class="text">历史直播</span>
+            </div>
             <div class="col-xs-4" style="border-right: 1px solid #ddd;" id="alllist">
                 <span class="text on">今日直播</span>
             </div>
-            <div class="col-xs-4" style="border-right: 1px solid #ddd;">
-                <span class="text">将要直播</span>
-            </div>
             <div class="col-xs-4">
-                <span class="text">历史直播</span>
+                <span class="text">将要直播</span>
             </div>
         </div>
     </div>
     <div class="row blo4">
-        <div class="col-xs-12 list">
-            <p><span>时间：</span><span style="color: #4b9bdd;">12月11日 18：30-21：00</span></p>
-            <p><span>课程：</span>管理类</p>
-            <p><span>主讲人：</span>老于</p>
+        <div class="textlist">
+            <%$(list1).each(function(k,v){%>
+            <div class="col-xs-12 list">
+                <p><span>时间：</span><span style="color: #4b9bdd;"><%=new Date(v.startTime).Format("yyyy年MM月dd日 hh:mm")%>-<%=new Date(v.endTime).Format("hh:mm")%></span></p>
+                <p><span>课程：</span><%=v.itemName%></p>
+                <p><span>主讲人：</span><%=v.teacherNameStr%></p>
+            </div>
+            <%})%>
         </div>
-        <div class="col-xs-12 list">
-            <p><span>时间：</span><span style="color: #4b9bdd;">12月11日 18：30-21：00</span></p>
-            <p><span>课程：</span>管理类</p>
-            <p><span>主讲人：</span>老于</p>
+        <div class="textlist">
+            <%$(list2).each(function(k,v){%>
+            <div class="col-xs-12 list">
+                <p><span>时间：</span><span style="color: #4b9bdd;"><%=new Date(v.startTime).Format("yyyy年MM月dd日 hh:mm")%>-<%=new Date(v.endTime).Format("hh:mm")%></span></p>
+                <p><span>课程：</span><%=v.itemName%></p>
+                <p><span>主讲人：</span><%=v.teacherNameStr%></p>
+            </div>
+            <%})%>
         </div>
-        <div class="col-xs-12 list">
-            <p><span>时间：</span><span style="color: #4b9bdd;">12月11日 18：30-21：00</span></p>
-            <p><span>课程：</span>管理类</p>
-            <p><span>主讲人：</span>老于</p>
+        <div class="textlist">
+            <%$(list3).each(function(k,v){%>
+            <div class="col-xs-12 list">
+                <p><span>时间：</span><span style="color: #4b9bdd;"><%=new Date(v.startTime).Format("yyyy年MM月dd日 hh:mm")%>-<%=new Date(v.endTime).Format("hh:mm")%></span></p>
+                <p><span>课程：</span><%=v.itemName%></p>
+                <p><span>主讲人：</span><%=v.teacherNameStr%></p>
+            </div>
+            <%})%>
         </div>
-        <div class="col-xs-12 list">
-            <p><span>时间：</span><span style="color: #4b9bdd;">12月11日 18：30-21：00</span></p>
-            <p><span>课程：</span>管理类</p>
-            <p><span>主讲人：</span>老于</p>
-        </div>
-        <div class="col-xs-12 list">
-            <p><span>时间：</span><span style="color: #4b9bdd;">12月11日 18：30-21：00</span></p>
-            <p><span>课程：</span>管理类</p>
-            <p><span>主讲人：</span>老于</p>
-        </div>
+        
     </div>
 
 </div>

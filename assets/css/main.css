@@ -48,3 +48,57 @@ body{overflow-x: hidden;}
     -webkit-transition: all .25s;
     transition: all .25s;
 }
+
+.login-form .login-field {
+    text-indent: 0;
+    padding-left: 40px;
+}
+.clear {
+    clear: both;
+}
+
+.k_calendar:before,
+.k_home:before,
+.k_detail:before,
+.k_clock:before,
+.k_teacher_intro:before,
+.k_home_intro:before,
+.k_arrow_left:before{
+    content: '';
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    background: url("../images/icon.png") 0 0 no-repeat;
+    background-size: 100px 300px;
+    overflow: hidden;
+    background-position: 0 -214px;
+}
+
+.k_select:after{
+    background: url('../images/icon.png') 0 -279px no-repeat;
+    content: '';
+    background-size: 100px 300px;
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    position: absolute;
+    right: 0;
+    top: 10px;
+}
+
+.k_arrow_left:before {
+    background-position: 0 -244px;
+    height: 20px;
+}
+
+.k_container {
+    overflow-x: hidden;
+}
+
+.loading img {
+    width: 25px;
+    height: 25px;
+}
+.loading, .loadbtn {
+    font-size: 13px;
+}
