@@ -2,16 +2,13 @@
 require("cc")
 //public
 var express = require('express');
-global.app =express();
-app.listen(80);
+app =express();
+app.listen(3000);
 
-cc.log(21)
 //private
 app.use("/api/:path",function(req, res, next){
-	var Node=require("./jiekou1")
-	var node=new Node()
-	node.init(req,res)
-	
+	require("./mysql/"+req.params.path)(req,res)
+	cc.log(req.url)
 });
 
 app.get("/a",function(req,res){
