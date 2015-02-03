@@ -22,15 +22,22 @@ var scene = cc.Node.extend({
         the.connection.query("USE test1")
         //获取多条数据
 
-        the.update({id:1})(function(err, results) {
-            cc.log(err)
-            the.res.jsonp(results)
-            the.connection.end();
+        $([21,212]).each(function(k){
+            cc.log(k)
         })
+//        the.update({id:1})(function(err, results) {
+//            cc.log(err)
+//            the.res.jsonp(results)
+//            the.connection.end();
+//        })
     },
     //增
     add:function(data,table,db){
         var the=this
+        for(var k in data){
+            var query_k=k
+        }
+
         return function(callback){
             the.connection.query("INSERT INTO `xiaoshuo1` (`title`, `info`, `time`) VALUES ( '"+data.title+"', '"+data.info+"', '"+data.time+"')", function(err, rows, fields) {
                 if (err) throw err;
