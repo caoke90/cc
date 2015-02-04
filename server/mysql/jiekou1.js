@@ -1,100 +1,127 @@
-var async = require("async");
-var mysql  = require('mysql');
 
-var scene = cc.Node.extend({
+
+var scene = cc.Snode.extend({
     //=> url=/api:path:type
     req:null,
     res:null,
-    connection:null,
+
+    //添加一部新小说
+    sql1:{
+        table:"xs_lists",
+        type:"insert",
+        values:{
+            xs_name:"小说名字",
+            xs_summary:"小说介绍"
+        }
+    },
+    //创建当前小说
+    sql2:{
+        type: 'create-table'
+        , table: ""
+        , ifNotExists: true
+        , definition: {
+            id: {
+                type: 'int'
+            }
+
+            , title: {
+                type: 'text'
+            }
+
+            , info: {
+                type: 'text'
+            }
+
+            , time: {
+                type: 'timestamp'
+                , default: 'now()'
+            }
+        }
+    },
+
+    //创建小说列表
+    sql0:{
+        type: 'create-table'
+        , table: "xs_lists"
+        , ifNotExists: true
+        , definition: {
+            id: {
+                type: 'serial'
+                , primaryKey: true
+            },
+            //小说名
+            xs_name:{
+                type: 'text'
+            },
+            //小说介绍
+            xs_summary:{
+                type: 'text'
+            }
+            , time: {
+                type: 'timestamp'
+                , default: 'now()'
+            }
+        }
+    },
+
     init: function(req, res) {
-        this.res=res
-        this.req=req
         this._super()
 
         var the=this
+        this.res=res
+        this.req=req
 
-        //mysql 数据库链接
-        the.connection = mysql.createConnection({
-            host     : 'localhost',
-            user     : 'root',
-            password : ''
-        });
-        the.connection.query("USE test1")
-        //获取多条数据
+        var tasks={}
+        //onEnter
+        tasks.start=(this.onEnter())
+        //tasks
+        //查询
+//        tasks.t1=this.create_xs()
+//        tasks.result=this.task1()
+//        tasks.t2=this.create_xs_lists()
+        tasks.t3=this.addXs(this.sql1)
+        tasks.t1=this.create_xs()
+        //onExit
+        tasks.end=(this.onExit())
+        async.series(
+            tasks,
+            function(err,data){
 
-        $([21,212]).each(function(k){
-            cc.log(k)
+                if(err){
+                    the.res.jsonp("fail")
+                }else{
+                    the.res.jsonp(data)
+                }
+            }
+        )
+    },
+    //插入小说 name summary
+    addXs:function(data1){
+        var the=this
+        return function(callback){
+            the.query(data1)(function(err,data){
+                the.sql2.table="xs"+data.insertId
+                callback(err,data)
+//                the.create_xs("xs"+data.insertId)(callback)
+            })
+        }
+
+    },
+    //查询数据
+    task1:function(){
+        return this.query({
+            type: 'select'
+            , table: this.data.table
         })
-//        the.update({id:1})(function(err, results) {
-//            cc.log(err)
-//            the.res.jsonp(results)
-//            the.connection.end();
-//        })
     },
-    //增
-    add:function(data,table,db){
-        var the=this
-        for(var k in data){
-            var query_k=k
-        }
-
-        return function(callback){
-            the.connection.query("INSERT INTO `xiaoshuo1` (`title`, `info`, `time`) VALUES ( '"+data.title+"', '"+data.info+"', '"+data.time+"')", function(err, rows, fields) {
-                if (err) throw err;
-                callback(null,rows)
-            });
-        }
+    //创建数据表
+    create_xs:function(name){
+        return this.query(this.sql2)
     },
-    //删除一条
-    del:function(where,table,db){
-        var the=this
-        return function(callback){
-            the.connection.query("DELETE FROM `xiaoshuo1` WHERE `id`="+id, function(err, rows, fields) {
-                if (err) throw err;
-                callback(null,rows)
-            });
-        }
-    },
-    //改
-    update:function(where,data,table,db){
-        var the=this
-        return function(callback){
-            the.connection.query("UPDATE `xiaoshuo1` SET `title` = 'caoke' WHERE `id`='"+data.id+"'", function(err, rows, fields) {
-                if (err) throw err;
-                callback(null,rows)
-            });
-        }
-    },
-    //查
-    find:function(where){
-        var the=this
-        return function(callback){
-            the.connection.query("SELECT * FROM `xiaoshuo1` WHERE `id`="+id, function(err, rows, fields) {
-                if (err) throw err;
-                callback(null,rows)
-            });
-        }
-    },
-    //返回一条数据
-    getOne:function() {
-        var the=this
-
-        return function(callback){
-            the.connection.query('SELECT * FROM `xiaoshuo1`', function(err, rows, fields) {
-                if (err) throw err;
-                callback(null,rows)
-            });
-        }
-
-    },
-    //获取多条数据
-    getArr:function(){
-        var the=this
-
-        return function(callback){
-            async.series([the.getOne(),the.getOne()],callback)
-        }
+    create_xs_lists:function(){
+        return this.query(this.sql0)
     }
+
 })
 module.exports=function(req,res){
     var node=new scene()
