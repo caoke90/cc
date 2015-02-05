@@ -1,8 +1,8 @@
 //global
 require("cc")
 express = require('express');
-$=require("cheerio")
 async = require("async");
+$=require("underscore")
 
 //public
 var scene=cc.Snode.extend({

@@ -1,7 +1,19 @@
 
 //var loginUrl="http://login.koolearn.cn"
-var loginUrl="http://login.neibu.koo.cn"
-var weixinUrl="http://weixin.neibu.koo.cn"
+var loginUrl="http://login.koo.cn"
+var weixinUrl="http://weixin.koo.cn"
+if(location.hostname.indexOf("neibu")>-1){
+    loginUrl="http://login.neibu.koo.cn"
+    weixinUrl="http://weixin.neibu.koo.cn"
+}
+if(location.hostname.indexOf("release")>-1){
+    loginUrl="http://login.release.koo.cn"
+    weixinUrl="http://weixin.release.koo.cn"
+}
+if(location.hostname.indexOf("test")>-1){
+    loginUrl="http://login.test.koo.cn"
+    weixinUrl="http://weixin.test.koo.cn"
+}
 seajs.config({
     debug: 0,
     preload: ["cc","seajs-text.js","ejs.min.js","async.js"],
