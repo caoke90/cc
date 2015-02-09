@@ -3,7 +3,7 @@ require("cc")
 express = require('express');
 async = require("async");
 $=require("underscore")
-
+var bodyParser = require('body-parser');
 //public
 var scene=cc.Snode.extend({
     app:null,
@@ -11,6 +11,11 @@ var scene=cc.Snode.extend({
         this._super()
         //初始化
         this.app =express();
+        cc.log(__dirname + '../')
+        this.app.use(bodyParser.urlencoded({ extended: false }))
+        this.app.use('/', express.static(__dirname + '/../'));
+
+
 
         //交互事件
         this.animation()

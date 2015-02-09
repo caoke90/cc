@@ -38,10 +38,7 @@
      xs+(xs_lists.id)=> id title info time
      数据表 xs+(xs_lists.id)
 */
-var scene = cc.Snode.extend({
-    //=> url=/api:path:type
-    req:null,
-    res:null,
+cc.Db= $.extend({
     lists_sql0:{
         type: 'create-table'
         , table: "xs_lists"
@@ -77,14 +74,14 @@ var scene = cc.Snode.extend({
         table:"xs_lists",
         type:"delete",
         where: {
-            id: 0
+
         }
     },
     lists_sql3:{
         table:"xs_lists",
         type:"update",
         where: {
-            id: 0
+
         }
         , updates: {
             xs_name: '默认小说名字修改'
@@ -103,7 +100,8 @@ var scene = cc.Snode.extend({
         , ifNotExists: true
         , definition: {
             id: {
-                type: 'int'
+                type: 'serial'
+                , primaryKey: true
             }
 
             , title: {
@@ -132,14 +130,14 @@ var scene = cc.Snode.extend({
         table:"",
         type:"delete",
         where: {
-            id: 0
+
         }
     },
     xs_sql3:{
         table:"",
         type:"update",
         where: {
-            id: 0
+
         }
         , updates: {
             title: '默认章节修改'
@@ -151,101 +149,58 @@ var scene = cc.Snode.extend({
         type:"select",
         where: {
         }
-    },
+    }
+})
+cc.log(cc.Db.xs_sql4)
+var scene = cc.Snode.extend({
+    //=> url=/api:path:type
+    req:null,
+    res:null,
+
     //增加一本小说
-    query_lists_sql1:function(xs_name,xs_summary){
+    query_lists_sql1:function(model){
         var the=this
-        the.lists_sql1.values.xs_name=xs_name
-        the.lists_sql1.values.xs_summary=xs_summary
+        var mode1= $.extend({},cc.Db.lists_sql1,model)
+        var mode2= $.extend({},the.xs_sql0)
         this.tasks.push(function(callback) {
-            the.query(the.lists_sql1)(function(err,data){
-                the.xs_sql0.table="xs"+data.insertId
+            the.query(mode1)(function(err,data){
+                mode2.table="xs"+data.insertId
                 callback(err)
             })
         })
 
-        this.tasks.push(the.query(the.xs_sql0))
+        this.tasks.push(the.query(mode2))
 
-        this.callback=function (err, result) {
-            if(err){
-                the.res.jsonp({
-                    code:4,
-                    msg:xs_name+"创建失败"
-                })
-            }else{
-                the.res.jsonp({
-                    code:0,
-                    msg:xs_name+"创建成功"
-                })
-            }
-
-        };
     },
     //删除一本小说
-    query_lists_sql2:function(id){
+    query_lists_sql2:function(model){
         var the=this
-        the.lists_sql2.where.id=id
+        var mode1= $.extend({},cc.Db.lists_sql2,model)
         this.tasks.push(function(callback){
             async.parallel([
-                the.query(the.lists_sql2),
+                the.query(mode1),
                 the.query({
                     type: 'drop-table',
-                    table:"xs"+the.lists_sql2.where.id
+                    table:"xs"+mode1.where.id
                 })
             ],callback)
         })
 
-        this.callback=function (err, result) {
-            if(err){
-                the.res.jsonp({
-                    code:404,
-                    msg:"小说不存在或者重复删除"
-                })
-            }else{
-                the.res.jsonp({
-                    code:0,
-                    msg:id+"删除成功"
-                })
-            }
-        }
-
     },
     //修改小说名字 介绍
-    query_lists_sql3:function(id,xs_name,xs_summary){
+    query_lists_sql3:function(model){
         var the=this
-        the.lists_sql3.updates.xs_name=xs_name
-        the.lists_sql3.updates.xs_summary=xs_summary
-        the.lists_sql3.where.id=id
-        this.tasks.push(function(callback) {
-            the.query(the.lists_sql1)(function(err,data){
-                the.xs_sql0.table="xs"+data.insertId
-                callback(err)
-            })
-        })
+        var mode1= $.extend({},cc.Db.lists_sql3,model)
 
-        this.tasks.push(the.query(the.xs_sql0))
+        this.tasks.push(the.query(mode1))
 
-        this.callback=function (err, result) {
-            if(err){
-                the.res.jsonp({
-                    code:4,
-                    msg:xs_name+"创建失败"
-                })
-            }else{
-                the.res.jsonp({
-                    code:0,
-                    msg:xs_name+"创建成功"
-                })
-            }
-
-        };
     },
     //修改小说名字 介绍
     query_lists_sql4:function(model){
         var the=this
-        the.lists_sql4=$.extend(the.lists_sql4,model)
+        var mode1= $.extend({},cc.Db.lists_sql4,model)
 
-        var len1=this.tasks.push(the.query(the.lists_sql4))
+        var len1=this.tasks.push(the.query(mode1))
 
         this.callback=function (err, result) {
             if(err){
@@ -263,30 +218,45 @@ var scene = cc.Snode.extend({
 
         };
     },
-    query_lists_sql0:function(){
+    //增加章节
+    query_xs_sql1:function(model){
         var the=this
+        var mode1= $.extend({},cc.Db.xs_sql1,model)
+        this.tasks.push(the.query(mode1))
+    },
+    query_xs_sql2:function(model){
+        var the=this
+        var mode1= $.extend({},cc.Db.xs_sql2,model)
+        this.tasks.push(the.query(mode1))
+    },
+    query_xs_sql3:function(model){
+        var the=this
+        var mode1= $.extend({},cc.Db.xs_sql3,model)
+        this.tasks.push(the.query(mode1))
+    },
+    query_xs_sql4:function(model){
+        var the=this
+        var mode1= $.extend({},cc.Db.xs_sql4,model)
+        var len1=this.tasks.push(the.query(mode1))
 
-        this.tasks.push(the.query(the.lists_sql0))
         this.callback=function (err, result) {
             if(err){
                 the.res.jsonp({
                     code:4,
-                    msg:the.lists_sql0.table+"创建失败"
+                    msg:"查询失败"
                 })
             }else{
                 the.res.jsonp({
                     code:0,
-                    msg:the.lists_sql0.table+"数据库初始化成功"
+                    msg:"查询成功",
+                    data:result[len1-1]
                 })
             }
 
         };
     },
-
     init: function(req, res) {
         this._super()
-
-
         this.res=res
         this.req=req
 
@@ -301,8 +271,59 @@ var scene = cc.Snode.extend({
         //连接数据库
         this.tasks.push(this.onEnter())
         //当前任务
-        if(true){
-            this.query_lists_sql4()
+
+        if(the.req.url=="/show"){
+//            this.query_lists_sql1({
+//                values:{
+//                    xs_name:"小说名字",
+//                    xs_summary:"小说内容"
+//                }
+//            })
+//            this.query_lists_sql2({
+//                where:{
+//                    id:23
+//                }
+//            })
+//            this.query_lists_sql3({
+//                where:{
+//                    id:23
+//                },
+//                updates:{
+//                    xs_name:"修改小说名字",
+//                    xs_summary:"修改小说内容"
+//                }
+//            })
+//            this.query_lists_sql4()
+//            this.query_xs_sql1({
+//                table:"xs23",
+//                values:{
+//                    title:"目录1",
+//                    info:"内容1"
+//                }
+//            })
+//            this.query_xs_sql2({
+//                table:"xs23",
+//                where:{
+//                    id:2
+//                }
+//            })
+//            this.query_xs_sql3({
+//                table:"xs23",
+//                where:{
+//                    id:2
+//                },
+//                updates:{
+//                    title:"目录1",
+//                    info:"内容1"
+//                }
+//            })
+            this.query_xs_sql4({
+                table:"xs23"
+            })
+        }
+        if(the.req.url=="/show2"){
+
+            this.query_lists_sql1()
         }
         //关闭数据库
         this.tasks.push(this.onExit())
@@ -311,8 +332,10 @@ var scene = cc.Snode.extend({
                 the.res.jsonp(err)
             }else{
                 the.res.jsonp({
+                    body:the.req.body,
+                    query:the.req.query,
                     code:0,
-                    msg:the.xs_sql0.table+"创建成功"
+                    msg:"success"
                 })
             }
 
